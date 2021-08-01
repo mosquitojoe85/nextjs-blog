@@ -3,7 +3,8 @@ import { LOGIN } from '../types';
 
 const initialState = {
   token: null,
-  name: ''
+  name: '',
+  email: '',
 };
 
 const authReducer = (state = initialState, action) => {
