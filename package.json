@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "date-fns": "^2.22.1",
+    "firebase": "^8.8.1",
     "gray-matter": "^4.0.3",
     "next": "^10.0.0",
     "next-redux-wrapper": "^7.0.2",
