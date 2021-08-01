@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+import firebase from "firebase/app";
 import Head from 'next/head';
 import Link from 'next/link';
 import { connect } from 'react-redux';
@@ -18,8 +20,24 @@ export async function getStaticProps() {
 
 function Home(props) {
   const { allPostsData, dispatch, auth } = props;
-  const handleFetchMe = () => {
-    dispatch(login());
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(login({ email: user.email, name: user.email, token: user.refreshToken }));
+      }
+    });
+  }, []);
+
+  const handleLogin = () => {
+    firebase.auth().signInWithEmailAndPassword('mosquitojoe85@gmail.com', '123456')
+      .then((userCredential) => {
+        var { user } = userCredential;
+        dispatch(login({ email: user.email, name: user.email, token: user.refreshToken }));
+      })
+      .catch((error) => {
+        console.log(`errorCode, errorMessage--->`, error);
+      });
   };
 
   return (
@@ -28,7 +46,7 @@ function Home(props) {
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <button onClick={handleFetchMe}> who am I?</button>
+        <button onClick={handleLogin}>login in</button>
         <p>{auth.name}</p>
         <p>
           (This is a sample website - you’ll be building a site like this on{' '}
